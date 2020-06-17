@@ -2,28 +2,32 @@
 <html>
 <body>
 
-<h2>The XMLHttpRequest Object</h2>
-
-<h2>Retrieve data from XML file</h2>
-
-<p><b>Status:</b> <span id="A1"></span></p>
-<p><b>Status text:</b> <span id="A2"></span></p>
-<p><b>Response:</b> <span id="A3"></span></p>
-
-<button onclick="loadDoc('note.xml')">Get XML data</button>
+<div id='showCD'></div>
 
 <script>
-function loadDoc(url) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
+displayCD(0);
+
+function displayCD(i) {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      document.getElementById('A1').innerHTML = this.status;
-      document.getElementById('A2').innerHTML = this.statusText;
-      document.getElementById('A3').innerHTML = this.responseText;
+      myFunction(this, i);
     }
   };
-  xhttp.open("GET", "note.xml", true);
-  xhttp.send();
+  xmlhttp.open("GET", "cd_catalog.xml", true);
+  xmlhttp.send();
+}
+
+function myFunction(xml, i) {
+  var xmlDoc = xml.responseXML; 
+  x = xmlDoc.getElementsByTagName("CD");
+  document.getElementById("showCD").innerHTML =
+  "Artist: " +
+  x[i].getElementsByTagName("ARTIST")[0].childNodes[0].nodeValue +
+  "<br>Title: " +
+  x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue +
+  "<br>Year: " + 
+  x[i].getElementsByTagName("YEAR")[0].childNodes[0].nodeValue;
 }
 </script>
 
